@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test WebGL FFT</title>
+</head>
+<body>
+<script src="../src/webgl_fft.js"></script>
+<script>
+    exports = this.fidola = {};
+</script>
+<script src="fidola.fft.js"></script>
+<script>
+    exports = undefined;
+</script>
+<script>
+    var n = 8192;
+    var input = new Float32Array(n * 2);
+    for (var i = 0; i < n; i++) {
+        input[i * 2] = Math.cos(Math.PI * 2 * (15 * i / n));
+        input[i * 2 + 1] = Math.sin(Math.PI * 2 * (15 * i / n));
+    }
+    var original = new Float32Array(input);
+
+    var start = performance.now();
+    webgl_fft.fft(input);
+    webgl_fft.ifft(input);
+    console.log(performance.now() - start);
+
+
+    var start = performance.now();
+    fidola.fft(input);
+    fidola.ifft(input);
+    console.log(performance.now() - start);
+
+</script>
+</body>
+</html>
